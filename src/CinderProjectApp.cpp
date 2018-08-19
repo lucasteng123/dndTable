@@ -35,37 +35,29 @@ using namespace std;
 class CinderProjectApp : public App {
 public:
 	static void prepare( Settings *settings );
-
 	void setup() override;
 	void cleanup() override;
 	void update() override;
 	void draw() override;
-
 	void resize() override;
-
 	void mouseMove( MouseEvent event ) override;
 	void mouseDown( MouseEvent event ) override;
 	void mouseDrag( MouseEvent event ) override;
 	void mouseUp( MouseEvent event ) override;
-
 	void keyDown( KeyEvent event ) override;
 	void keyUp( KeyEvent event ) override;
-
 	void updateWindowTitle();
 private:
 	bool			mUseBeginEnd;
-
 	fs::path		mSettings;
-
 	gl::TextureRef	mImage;
 	WarpList		mWarps;
-
 	Area			mSrcArea;
 };
 
 void CinderProjectApp::prepare( Settings *settings )
 {
-	settings->setWindowSize( 1440, 900 );
+	settings->setWindowSize( 1920, 1080 );
 }
 
 void CinderProjectApp::setup()
@@ -73,29 +65,27 @@ void CinderProjectApp::setup()
 	mUseBeginEnd = false;
 	updateWindowTitle();
 	disableFrameRate();
+    setFullScreen(true);
 
 	// initialize warps
 	mSettings = getAssetPath( "" ) / "warps.xml";
-	if( fs::exists( mSettings ) ) {
-		// load warp settings from file if one exists
-		mWarps = Warp::readSettings( loadFile( mSettings ) );
-	}
-	else {
+    if( fs::exists( mSettings ) ) {
+        // load warp settings from file if one exists
+        mWarps = Warp::readSettings(loadFile(mSettings));
+    }
+    else {
 		// otherwise create a warp from scratch
-		mWarps.push_back( WarpBilinear::create() );
-		mWarps.push_back( WarpPerspective::create() );
-		mWarps.push_back( WarpPerspectiveBilinear::create() );
-	}
+		mWarps.push_back(WarpPerspective::create());
+        mWarps.push_back(WarpPerspective::create());
+        mWarps.push_back(WarpPerspective::create());
+    }
 
 	// load test image
 	try {
-		mImage = gl::Texture::create( loadImage( loadAsset( "help.png" ) ), 
-									  gl::Texture2d::Format().loadTopDown().mipmap( true ).minFilter( GL_LINEAR_MIPMAP_LINEAR ) );
-
-		mSrcArea = mImage->getBounds();
-
+		mImage = gl::Texture::create(loadImage(loadAsset("help.png")), gl::Texture2d::Format().loadTopDown().mipmap( true ).minFilter( GL_LINEAR_MIPMAP_LINEAR ));
+        mSrcArea = mImage->getBounds();
 		// adjust the content size of the warps
-		Warp::setSize( mWarps, mImage->getSize() );
+		Warp::setSize(mWarps,mImage->getSize());
 	}
 	catch( const std::exception &e ) {
 		console() << e.what() << std::endl;
@@ -121,25 +111,19 @@ void CinderProjectApp::draw()
 
 	if( mImage ) {
 		// iterate over the warps and draw their content
-		for( auto &warp : mWarps ) {
+		
+        for( auto &warp : mWarps ) {
 			// there are two ways you can use the warps:
-			if( mUseBeginEnd ) {
+			
 				// a) issue your draw commands between begin() and end() statements
 				warp->begin();
 
 				// in this demo, we want to draw a specific area of our image,
 				// but if you want to draw the whole image, you can simply use: gl::draw( mImage );
-				gl::draw( mImage, mSrcArea, warp->getBounds() );
+				gl::draw(mImage);
 
 				warp->end();
-			}
-			else {
-				// b) simply draw a texture on them (ideal for video)
-
-				// in this demo, we want to draw a specific area of our image,
-				// but if you want to draw the whole image, you can simply use: warp->draw( mImage );
-				warp->draw( mImage, mSrcArea );
-			}
+			
 		}
 	}
 }
