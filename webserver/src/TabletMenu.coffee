@@ -62,8 +62,7 @@ class TabletMenu
 
             # Set turn indicator for this label
             @oSend.send new OSC.Message \
-                '/init/turnTracker/'+i, 0.9
-                # '/init/turnTracker/'+i, if @currentTurn == i then 1 else 0
+                '/init/turnTracker/'+i, if @currentTurn == i then 0.99 else 0.01
         return null
         
 

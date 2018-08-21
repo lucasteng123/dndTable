@@ -87,9 +87,8 @@
           this.oSend.send(new OSC.Message('/init/turnTracker/label/' + i, ""));
         }
         // Set turn indicator for this label
-        this.oSend.send(new OSC.Message('/init/turnTracker/' + i, 0.9));
+        this.oSend.send(new OSC.Message('/init/turnTracker/' + i, this.currentTurn === i ? 0.99 : 0.01));
       }
-      // '/init/turnTracker/'+i, if @currentTurn == i then 1 else 0
       return null;
     }
 
