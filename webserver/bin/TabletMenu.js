@@ -93,13 +93,14 @@
       results = [];
       for (x = k = 1; k <= 7; x = ++k) {
         results.push((function(x) {
-          i = x - 1;
-          return bindRecv('/image/change/' + i, function() {
+          var ii;
+          ii = x - 1;
+          return bindRecv('/image/change/' + ii, function() {
             // Ignore: user clicks on blank map
-            if (i >= self.maps.length) {
+            if (ii >= self.maps.length) {
               return null;
             }
-            return self.proj.changeImage(x, self.maps[i]['filename']);
+            return self.proj.changeImage(x, self.maps[ii]['filename']);
           });
         })(x));
       }

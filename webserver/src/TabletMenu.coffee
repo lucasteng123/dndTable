@@ -65,12 +65,12 @@ class TabletMenu
         # Bind commands to add a map
         for x in [1..7]
             do (x)->
-                i = x-1
-                bindRecv  '/image/change/'+i, ()->
+                ii = x-1
+                bindRecv  '/image/change/'+ii, ()->
                     # Ignore: user clicks on blank map
-                    if i >= self.maps.length
+                    if ii >= self.maps.length
                         return null
-                    self.proj.changeImage(x, self.maps[i]['filename'])
+                    self.proj.changeImage(x, self.maps[ii]['filename'])
     checkHost: (message)->
         if @remote == ""
             @remote = "ip-will-go-here-eventually"
