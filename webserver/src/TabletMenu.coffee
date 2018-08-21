@@ -63,8 +63,9 @@ class TabletMenu
                     return null
         
         # Bind commands to add a map
-        for i in [0...7]
-            do (i)->
+        for x in [1..7]
+            do (x)->
+                i = x-1
                 bindRecv  '/image/change/'+i, ()->
                     # Ignore: user clicks on blank map
                     if i >= self.maps.length

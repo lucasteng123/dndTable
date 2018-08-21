@@ -41,7 +41,7 @@
     }
 
     bindOSC(oRecv, oSend, proj) {
-      var bindRecv, i, j, k, results, self;
+      var bindRecv, i, j, k, results, self, x;
       this.oSend = oSend;
       this.proj = proj;
       self = this;
@@ -91,8 +91,9 @@
 
 // Bind commands to add a map
       results = [];
-      for (i = k = 0; k < 7; i = ++k) {
-        results.push((function(i) {
+      for (x = k = 1; k <= 7; x = ++k) {
+        results.push((function(x) {
+          i = x - 1;
           return bindRecv('/image/change/' + i, function() {
             // Ignore: user clicks on blank map
             if (i >= self.maps.length) {
@@ -100,7 +101,7 @@
             }
             return self.proj.changeImage(self.maps[i]['filename']);
           });
-        })(i));
+        })(x));
       }
       return results;
     }
