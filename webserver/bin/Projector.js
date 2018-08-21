@@ -10,8 +10,8 @@
       this.oSend = oSend;
     }
 
-    changeImage(filename) {
-      return this.oSend.send(new OSC.Message('/image/change/', filename));
+    changeImage(dest, filename) {
+      return this.oSend.send(new OSC.Message('/image/change/' + dest, filename));
     }
 
   };

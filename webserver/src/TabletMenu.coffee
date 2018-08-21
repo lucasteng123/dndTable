@@ -70,7 +70,7 @@ class TabletMenu
                     # Ignore: user clicks on blank map
                     if i >= self.maps.length
                         return null
-                    self.proj.changeImage(self.maps[i]['filename'])
+                    self.proj.changeImage(x, self.maps[i]['filename'])
     checkHost: (message)->
         if @remote == ""
             @remote = "ip-will-go-here-eventually"

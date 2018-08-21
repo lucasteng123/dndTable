@@ -99,7 +99,7 @@
             if (i >= self.maps.length) {
               return null;
             }
-            return self.proj.changeImage(self.maps[i]['filename']);
+            return self.proj.changeImage(x, self.maps[i]['filename']);
           });
         })(x));
       }

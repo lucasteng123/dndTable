@@ -3,5 +3,5 @@ OSC = require 'osc-js'
 
 module.exports = class
     constructor: (@oSend)->
-    changeImage: (filename)->
-        @oSend.send new OSC.Message '/image/change/', filename
+    changeImage: (dest, filename)->
+        @oSend.send new OSC.Message '/image/change/'+dest, filename
