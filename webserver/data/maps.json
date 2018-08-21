@@ -1,0 +1,12 @@
+[
+    {
+        "name":"dungeon",
+        "session":1,
+        "filename":"map1.jpg"
+    },
+    {
+        "name":"attic",
+        "session":1,
+        "filename":"map2.jpg"
+    }
+]

@@ -1,0 +1,97 @@
+{
+    "PlayerCharacters":[
+        {
+            "name":"Willim Lipurli",
+            "class": "Blood Hunter",
+            "style":"fighter",
+            "level":2,
+            "baseAC":16,
+            "maxHP":15
+        },
+        {
+            "name":"Miara",
+            "class": "Blood Hunter",
+            "style":"fighter",
+            "level":2,
+            "baseAC":16,
+            "maxHP":15
+        },
+        {
+            "name":"Karliah",
+            "class": "Rogue",
+            "style":"rogue",
+            "level":2,
+            "baseAC":16,
+            "maxHP":15
+        },
+        {
+            "name":"Marx",
+            "class": "Rogue",
+            "style":"rogue",
+            "level":2,
+            "baseAC":16,
+            "maxHP":15
+        },
+        {
+            "name":"Nissa",
+            "class": "Cleric",
+            "style":"cleric",
+            "level":2,
+            "baseAC":16,
+            "maxHP":15
+        },
+        {
+            "name":"Gary",
+            "class": "Paladin",
+            "style":"paladin",
+            "level":2,
+            "baseAC":16,
+            "maxHP":15
+        },
+        {
+            "name":"Piotyr",
+            "class": "Fighter",
+            "style":"fighter",
+            "level":2,
+            "baseAC":16,
+            "maxHP":15
+        }
+    ],
+    "NPC":[
+        {
+            "name":"Strahd",
+            "showNameInInitiative":false,
+            "ally":false,
+            "style":"vampire",
+            "baseAC":16,
+            "maxHP":15,
+            "dex":19,
+            "con":10,
+            "str":20,
+            "wis":15,
+            "int":3,
+            "cha":543,
+            "proficiencies":{
+                "savingThrows":["int","dex"],
+                "skills":["acrobatics","sleight of hand"]
+            },
+            "resistances":["yes","piercing"],
+            "legendaryActions":true
+        }
+    ], 
+    "Mobs":[
+        {
+            "name":"Undead Horde",
+            "quantity":10,
+            "style":"undead"
+        }
+
+    ],
+    "Creatures":[
+        {
+            "name":"wolf",
+            "style":"animal"
+        }
+
+    ]
+}
