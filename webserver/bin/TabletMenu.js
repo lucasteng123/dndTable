@@ -11,15 +11,31 @@
 
   TabletMenu = class TabletMenu {
     constructor() {
-      var character, j, len, ref;
+      var character, j, k, l, len, len1, len2, len3, m, ref, ref1, ref2, ref3;
       this.remote = "";
       this.initiatives = ["defaulty"];
       this.characters = [];
+      this.npcs = [];
       this.currentTurn = 0;
       ref = dataCharacters['PlayerCharacters'];
       for (j = 0, len = ref.length; j < len; j++) {
         character = ref[j];
         this.characters.push(character['name']);
+      }
+      ref1 = dataCharacters['NPC'];
+      for (k = 0, len1 = ref1.length; k < len1; k++) {
+        character = ref1[k];
+        this.npcs.push(character['name']);
+      }
+      ref2 = dataCharacters['Mobs'];
+      for (l = 0, len2 = ref2.length; l < len2; l++) {
+        character = ref2[l];
+        this.npcs.push(character['name']);
+      }
+      ref3 = dataCharacters['Creatures'];
+      for (m = 0, len3 = ref3.length; m < len3; m++) {
+        character = ref3[m];
+        this.npcs.push(character['name']);
       }
     }
 
@@ -50,7 +66,7 @@
       results = [];
       for (i = j = 0; j <= 7; i = ++j) {
         results.push((function(i) {
-          return bindRecv('/initiative/pc/' + i, function() {
+          bindRecv('/initiative/pc/' + i, function() {
             // Ignore: user clicks on blank label
             if (i >= self.characters.length) {
               return null;
@@ -59,18 +75,30 @@
             self.initiatives.push(self.characters[i]);
             return null;
           });
+          return bindRecv('/initiative/npc/' + i, function() {
+            // Ignore: user clicks on blank label
+            if (i >= self.npcs.length) {
+              return null;
+            }
+            // Add character name to initiatives list
+            self.initiatives.push(self.npcs[i]);
+            return null;
+          });
         })(i));
       }
       return results;
     }
 
     checkHost(message) {
-      var i, j, ref, results;
+      var i, j, k, ref, ref1, results;
       if (this.remote === "") {
         this.remote = "ip-will-go-here-eventually";
-        results = [];
         for (i = j = 0, ref = this.characters.length; (0 <= ref ? j < ref : j > ref); i = 0 <= ref ? ++j : --j) {
-          results.push(this.oSend.send(new OSC.Message('/initiative/labels/pc' + i, this.characters[i])));
+          this.oSend.send(new OSC.Message('/initiative/labels/pc' + i, this.characters[i]));
+        }
+        results = [];
+        for (i = k = 0, ref1 = this.npcs.length; (0 <= ref1 ? k < ref1 : k > ref1); i = 0 <= ref1 ? ++k : --k) {
+          results.push(this.oSend.send(new OSC.Message('/initiative/labels/npc' + i, this.npcs[i])));
         }
         return results;
       }

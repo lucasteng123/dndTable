@@ -10,11 +10,18 @@ class TabletMenu
 
         @initiatives = ["defaulty"]
         @characters = []
+        @npcs = []
 
         @currentTurn = 0
 
         for character in dataCharacters['PlayerCharacters']
             @characters.push character['name']
+        for character in dataCharacters['NPC']
+            @npcs.push character['name']
+        for character in dataCharacters['Mobs']
+            @npcs.push character['name']
+        for character in dataCharacters['Creatures']
+            @npcs.push character['name']
     bindOSC: (oRecv, @oSend)->
         self = @
         bindRecv = (route, func) ->
@@ -43,12 +50,22 @@ class TabletMenu
                     # Add character name to initiatives list
                     self.initiatives.push self.characters[i] # times page?
                     return null
+                bindRecv '/initiative/npc/'+i, ()->
+                    # Ignore: user clicks on blank label
+                    if i >= self.npcs.length
+                        return null
+                    # Add character name to initiatives list
+                    self.initiatives.push self.npcs[i] # times page?
+                    return null
     checkHost: (message)->
         if @remote == ""
             @remote = "ip-will-go-here-eventually"
             for i in [0...@characters.length]
                 @oSend.send new OSC.Message \
                     '/initiative/labels/pc'+i, @characters[i]
+            for i in [0...@npcs.length]
+                @oSend.send new OSC.Message \
+                    '/initiative/labels/npc'+i, @npcs[i]
     drawInitiatives: ()->
         for i in [0..11]
             # Set initiative label accordingly
