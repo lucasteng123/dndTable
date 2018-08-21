@@ -91,16 +91,18 @@
 
 // Bind commands to add a map
       results = [];
-      for (x = k = 1; k <= 7; x = ++k) {
+      for (x = k = 1; k <= 8; x = ++k) {
         results.push((function(x) {
           var ii;
-          ii = x - 1;
+          ii = x;
+          console.log(ii);
           return bindRecv('/image/change/' + ii, function() {
             // Ignore: user clicks on blank map
-            if (ii >= self.maps.length) {
+            if (ii-1 >= self.maps.length) {
               return null;
             }
-            return self.proj.changeImage(x, self.maps[ii]['filename']);
+            console.log(ii);
+            return self.proj.changeImage(x, self.maps[ii-1]['filename']);
           });
         })(x));
       }
