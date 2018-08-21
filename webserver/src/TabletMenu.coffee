@@ -12,6 +12,8 @@ class TabletMenu
         @characters = []
         @npcs = []
 
+        @maps = dataMaps
+
         @currentTurn = 0
 
         for character in dataCharacters['PlayerCharacters']
@@ -22,7 +24,8 @@ class TabletMenu
             @npcs.push character['name']
         for character in dataCharacters['Creatures']
             @npcs.push character['name']
-    bindOSC: (oRecv, @oSend)->
+        
+    bindOSC: (oRecv, @oSend, @proj)->
         self = @
         bindRecv = (route, func) ->
             oRecv.on route, (message) ->
@@ -30,6 +33,7 @@ class TabletMenu
                 self.checkHost message
                 func message
                 self.drawInitiatives()
+                self.drawMaps()
         bindRecv '/image/change', ()->
         bindRecv '/initiative/clear', ()->
             self.initiatives = []
@@ -57,6 +61,15 @@ class TabletMenu
                     # Add character name to initiatives list
                     self.initiatives.push self.npcs[i] # times page?
                     return null
+        
+        # Bind commands to add a map
+        for i in [0...7]
+            do (i)->
+                bindRecv  '/image/change/'+i, ()->
+                    # Ignore: user clicks on blank map
+                    if i >= self.maps.length
+                        return null
+                    self.proj.changeImage(self.maps[i]['filename'])
     checkHost: (message)->
         if @remote == ""
             @remote = "ip-will-go-here-eventually"
@@ -66,6 +79,16 @@ class TabletMenu
             for i in [0...@npcs.length]
                 @oSend.send new OSC.Message \
                     '/initiative/labels/npc'+i, @npcs[i]
+    drawMaps: ()->
+        for i in [0...7]
+            # Set map label
+            if i < @maps.length
+                @oSend.send new OSC.Message \
+                    '/maps/label/'+i, @maps[i]['name']
+            else
+                @oSend.send new OSC.Message \
+                    '/maps/label/'+i, ""
+        return null
     drawInitiatives: ()->
         for i in [0..11]
             # Set initiative label accordingly

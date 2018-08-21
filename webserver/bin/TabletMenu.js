@@ -16,6 +16,7 @@
       this.initiatives = ["defaulty"];
       this.characters = [];
       this.npcs = [];
+      this.maps = dataMaps;
       this.currentTurn = 0;
       ref = dataCharacters['PlayerCharacters'];
       for (j = 0, len = ref.length; j < len; j++) {
@@ -39,16 +40,18 @@
       }
     }
 
-    bindOSC(oRecv, oSend) {
-      var bindRecv, i, j, results, self;
+    bindOSC(oRecv, oSend, proj) {
+      var bindRecv, i, j, k, results, self;
       this.oSend = oSend;
+      this.proj = proj;
       self = this;
       bindRecv = function(route, func) {
         return oRecv.on(route, function(message) {
           // console.log message
           self.checkHost(message);
           func(message);
-          return self.drawInitiatives();
+          self.drawInitiatives();
+          return self.drawMaps();
         });
       };
       bindRecv('/image/change', function() {});
@@ -63,9 +66,8 @@
         }
       });
 // Bind commands to add a player to the initiative list
-      results = [];
       for (i = j = 0; j <= 7; i = ++j) {
-        results.push((function(i) {
+        (function(i) {
           bindRecv('/initiative/pc/' + i, function() {
             // Ignore: user clicks on blank label
             if (i >= self.characters.length) {
@@ -83,6 +85,20 @@
             // Add character name to initiatives list
             self.initiatives.push(self.npcs[i]);
             return null;
+          });
+        })(i);
+      }
+
+// Bind commands to add a map
+      results = [];
+      for (i = k = 0; k < 7; i = ++k) {
+        results.push((function(i) {
+          return bindRecv('/image/change/' + i, function() {
+            // Ignore: user clicks on blank map
+            if (i >= self.maps.length) {
+              return null;
+            }
+            return self.proj.changeImage(self.maps[i]['filename']);
           });
         })(i));
       }
@@ -102,6 +118,19 @@
         }
         return results;
       }
+    }
+
+    drawMaps() {
+      var i, j;
+      for (i = j = 0; j < 7; i = ++j) {
+        // Set map label
+        if (i < this.maps.length) {
+          this.oSend.send(new OSC.Message('/maps/label/' + i, this.maps[i]['name']));
+        } else {
+          this.oSend.send(new OSC.Message('/maps/label/' + i, ""));
+        }
+      }
+      return null;
     }
 
     drawInitiatives() {

@@ -3,6 +3,7 @@ Server = require './Server'
 TabletMenu = require './TabletMenu'
 OSCFactory = require './OSCFactory'
 OSCRelay = require './OSCRelay'
+Projector = require './Projector'
 
 # Internal objects
 l = require './logger'
@@ -22,8 +23,10 @@ oscProj = OSCFactory.makeClient('192.168.2.21', 12000)
 oscMenu = OSCFactory.makeClient('10.42.0.238', 9004)
 # oscMenu = OSCFactory.makeClient('127.0.0.1', 9004)
 
+proj = new Projector(oscProj)
+
 # Add tablet menu controller
-new TabletMenu().bindOSC(oscThis, oscMenu)
+new TabletMenu().bindOSC(oscThis, oscMenu, proj)
 
 oscThis.on 'open', ()->
     l.log l.INFO, l.Msg.ListeningOSC
